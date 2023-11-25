@@ -1,7 +1,7 @@
 {
-	"name": "swanlake-library",
+	"name": "nest-helpers",
 	"version": "1.0.0",
-	"description": " A library that support Swanlake API",
+	"description": " A library that support jsonapi in nest projects",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"scripts": {
