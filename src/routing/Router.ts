@@ -1,8 +1,10 @@
 export class Router {
 	private static _microservices(): Map<string, string> {
-		const keyValuePairs = process.env.API_VERSIONS.split(";").filter(Boolean);
+		if (process.env.API_VERSIONS === undefined) return undefined;
 
 		const result = new Map<string, string>();
+
+		const keyValuePairs = process.env.API_VERSIONS.split(";").filter(Boolean);
 
 		for (const pair of keyValuePairs) {
 			const [key, value] = pair.split(":");
@@ -16,9 +18,11 @@ export class Router {
 
 	static getUrl(microservice?: string) {
 		const url: string = process.env.API_URL;
-		if (!microservice) return url;
+		const microservices = this._microservices();
 
-		const versions: Map<string, string> = this._microservices();
+		if (!microservice || !microservices) return url;
+
+		const versions: Map<string, string> = microservices;
 		return `${url}v${versions.get(microservice)}/`;
 	}
 }

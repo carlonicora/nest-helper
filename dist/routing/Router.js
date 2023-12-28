@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Router = void 0;
 class Router {
     static _microservices() {
-        const keyValuePairs = process.env.API_VERSIONS.split(";").filter(Boolean);
+        if (process.env.API_VERSIONS === undefined)
+            return undefined;
         const result = new Map();
+        const keyValuePairs = process.env.API_VERSIONS.split(";").filter(Boolean);
         for (const pair of keyValuePairs) {
             const [key, value] = pair.split(":");
             if (key && value) {
@@ -15,9 +17,10 @@ class Router {
     }
     static getUrl(microservice) {
         const url = process.env.API_URL;
-        if (!microservice)
+        const microservices = this._microservices();
+        if (!microservice || !microservices)
             return url;
-        const versions = this._microservices();
+        const versions = microservices;
         return `${url}v${versions.get(microservice)}/`;
     }
 }
