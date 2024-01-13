@@ -185,6 +185,8 @@ export class JsonApiBuilder {
 			Object.entries(builder.relationships).forEach((relationship) => {
 				let resourceLinkage: any = {};
 
+				const manyToManyRelationships = relationship[0].split("__");
+
 				if (relationship[1].resourceIdentifier) {
 					const minimalData: any = {
 						type: relationship[1].resourceIdentifier.type,
@@ -227,6 +229,22 @@ export class JsonApiBuilder {
 					}
 					if (relationship[1].included && additionalIncludeds.length > 0) includedElements.push(...additionalIncludeds);
 					serialisedData.relationships[relationship[1].name ?? relationship[0]] = resourceLinkage;
+				} else if (manyToManyRelationships.length > 1 && data[manyToManyRelationships[0]]) {
+					serialisedData.relationships[relationship[1].name ?? relationship[0]] = [];
+					data[manyToManyRelationships[0]].forEach((item: any) => {
+						const { minimalData, relationshipLink, additionalIncludeds } = this.serialiseRelationship(
+							item[manyToManyRelationships[1]],
+							relationship[1].data
+						);
+
+						resourceLinkage = {
+							data: minimalData,
+						};
+						if (relationship[1].included && additionalIncludeds.length > 0)
+							includedElements.push(...additionalIncludeds);
+
+						serialisedData.relationships[relationship[1].name ?? relationship[0]].push(resourceLinkage);
+					});
 				} else if (relationship[1].links) {
 					const related = relationship[1].links.related(data);
 
