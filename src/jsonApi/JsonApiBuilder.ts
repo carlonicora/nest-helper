@@ -230,20 +230,15 @@ export class JsonApiBuilder {
 					if (relationship[1].included && additionalIncludeds.length > 0) includedElements.push(...additionalIncludeds);
 					serialisedData.relationships[relationship[1].name ?? relationship[0]] = resourceLinkage;
 				} else if (manyToManyRelationships.length > 1 && data[manyToManyRelationships[0]]) {
-					serialisedData.relationships[relationship[1].name ?? relationship[0]] = [];
-					data[manyToManyRelationships[0]].forEach((item: any) => {
+					serialisedData.relationships[relationship[1].name ?? relationship[0]] = { data: [] };
+					data[manyToManyRelationships[0]].forEach((item) => {
 						const { minimalData, relationshipLink, additionalIncludeds } = this.serialiseRelationship(
 							item[manyToManyRelationships[1]],
 							relationship[1].data
 						);
-
-						resourceLinkage = {
-							data: minimalData,
-						};
 						if (relationship[1].included && additionalIncludeds.length > 0)
 							includedElements.push(...additionalIncludeds);
-
-						serialisedData.relationships[relationship[1].name ?? relationship[0]].push(resourceLinkage);
+						serialisedData.relationships[relationship[1].name ?? relationship[0]].data.push(minimalData);
 					});
 				} else if (relationship[1].links) {
 					const related = relationship[1].links.related(data);
