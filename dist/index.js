@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bufferToUuid = exports.uuidToBuffer = exports.Router = exports.JsonApiBuilder = exports.OptionalJwtAuthGuard = exports.JwtStrategy = exports.JwtAuthGuard = exports.AuthModule = exports.JsonApiNavigator = exports.Imgix = void 0;
+exports.bufferToUuid = exports.uuidToBuffer = exports.DataValidator = exports.Router = exports.JsonApiBuilder = exports.OptionalJwtAuthGuard = exports.JwtStrategy = exports.JwtAuthGuard = exports.AuthModule = exports.JsonApiNavigator = exports.Imgix = void 0;
 var Imgix_1 = require("./imgix/Imgix");
 Object.defineProperty(exports, "Imgix", { enumerable: true, get: function () { return Imgix_1.Imgix; } });
 var JsonApiNavigator_1 = require("./jsonApi/JsonApiNavigator");
@@ -17,6 +17,8 @@ var JsonApiBuilder_1 = require("./jsonApi/JsonApiBuilder");
 Object.defineProperty(exports, "JsonApiBuilder", { enumerable: true, get: function () { return JsonApiBuilder_1.JsonApiBuilder; } });
 var Router_1 = require("./routing/Router");
 Object.defineProperty(exports, "Router", { enumerable: true, get: function () { return Router_1.Router; } });
+var DataValidator_1 = require("./validator/DataValidator");
+Object.defineProperty(exports, "DataValidator", { enumerable: true, get: function () { return DataValidator_1.DataValidator; } });
 function uuidToBuffer(uuid) {
     const hex = uuid.replace(/-/g, "");
     return Buffer.from(hex, "hex");
