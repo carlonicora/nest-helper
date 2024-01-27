@@ -23,7 +23,7 @@ class DataValidator {
             const propertyPath = parentPropertyPath ? `${parentPropertyPath}.${error.property}` : error.property;
             if (error.constraints) {
                 Object.values(error.constraints).forEach((constraint) => {
-                    formattedErrors.push(`${propertyPath} ${constraint}`);
+                    formattedErrors.push(`${propertyPath}: ${constraint}`);
                 });
             }
             if (error.children && error.children.length > 0) {

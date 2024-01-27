@@ -29,7 +29,7 @@ export class DataValidator {
 
 			if (error.constraints) {
 				Object.values(error.constraints).forEach((constraint) => {
-					formattedErrors.push(`${propertyPath} ${constraint}`);
+					formattedErrors.push(`${propertyPath}: ${constraint}`);
 				});
 			}
 
