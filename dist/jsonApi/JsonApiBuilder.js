@@ -49,6 +49,16 @@ class JsonApiBuilder {
         if (hasEnoughData)
             this._pagination.after = (0, index_1.bufferToUuid)(data[data.length - 1][this._pagination.idName]);
     }
+    _addToIncluded(includedElements, newElements) {
+        const uniqueIdentifiers = new Set(includedElements.map((e) => `${e.type}-${e.id}`));
+        newElements.forEach((element) => {
+            const identifier = `${element.type}-${element.id}`;
+            if (!uniqueIdentifiers.has(identifier)) {
+                includedElements.push(element);
+                uniqueIdentifiers.add(identifier);
+            }
+        });
+    }
     serialise(data, builder, url, idName) {
         const response = {
             links: {
@@ -93,12 +103,12 @@ class JsonApiBuilder {
         if (Array.isArray(data)) {
             const serialisedResults = data.map((item) => this.serialiseData(item, builder));
             response.data = serialisedResults.map((result) => result.serialisedData);
-            included = [].concat(...serialisedResults.map((result) => result.includedElements));
+            this._addToIncluded(included, [].concat(...serialisedResults.map((result) => result.includedElements)));
         }
         else {
             const { serialisedData, includedElements } = this.serialiseData(data, builder);
             response.data = serialisedData;
-            included = includedElements;
+            this._addToIncluded(included, includedElements);
         }
         if (included.length > 0) {
             response.included = included;
@@ -222,11 +232,11 @@ class JsonApiBuilder {
         if (Array.isArray(data)) {
             const serialisedResults = data.map((item) => this.serialiseData(item, builder));
             const serialisedData = serialisedResults.map((result) => result.serialisedData);
-            const includedElements = [].concat(...serialisedResults.map((result) => result.includedElements));
+            const includedElements = serialisedResults.map((result) => result.includedElements).flat();
             response.minimalData = serialisedData.map((result) => {
                 return { type: result.type, id: result.id };
             });
-            response.additionalIncludeds = [].concat(...includedElements).concat(serialisedData);
+            this._addToIncluded(response.additionalIncludeds, includedElements.concat(serialisedData));
         }
         else {
             const { serialisedData, includedElements } = this.serialiseData(data, builder);
@@ -239,7 +249,7 @@ class JsonApiBuilder {
                     self: serialisedData.links.self,
                 };
             }
-            response.additionalIncludeds = [...includedElements, serialisedData];
+            this._addToIncluded(response.additionalIncludeds, [...includedElements, serialisedData]);
         }
         return response;
     }

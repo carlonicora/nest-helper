@@ -20,6 +20,7 @@ export declare class JsonApiBuilder {
     private get size();
     generateCursor(): JsonApiCursorInterface;
     private updatePagination;
+    private _addToIncluded;
     serialise<T, R extends JsonApiDataInterface>(data: T | T[], builder: R, url?: string, idName?: string): any;
     private serialiseData;
     private serialiseRelationship;
