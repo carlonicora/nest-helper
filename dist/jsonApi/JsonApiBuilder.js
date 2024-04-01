@@ -6,6 +6,13 @@ class JsonApiBuilder {
     constructor(query) {
         this._paginationCount = 25;
         this._pagination = {};
+        this._additionalParams = "";
+        this._additionalParams = Object.keys(query)
+            .filter((key) => key !== "page[size]" && key !== "page[before]" && key !== "page[after]")
+            .map((key) => `${key}=${query[key]}`)
+            .join("&");
+        if (this._additionalParams.length > 0)
+            this._additionalParams = "&" + this._additionalParams;
         if (query?.["page[size]"])
             this._pagination.size = +query["page[size]"];
         if (query?.["page[before]"])
@@ -78,12 +85,14 @@ class JsonApiBuilder {
                         this._pagination.size = this._paginationCount;
                     if (data.length === this.size) {
                         response.links.self =
-                            url + (url.indexOf("?") === -1 ? "?" : "&") + `page[size]=${this._pagination.size.toString()}`;
+                            url +
+                                (url.indexOf("?") === -1 ? "?" : "&") +
+                                `page[size]=${this._pagination.size.toString()}${this._additionalParams}`;
                         if (this._pagination.after) {
                             response.links.next =
                                 url +
                                     (url.indexOf("?") === -1 ? "?" : "&") +
-                                    `page[size]=${this._pagination.size.toString()}&page[after]=${this._pagination.after}`;
+                                    `page[size]=${this._pagination.size.toString()}&page[after]=${this._pagination.after}${this._additionalParams}`;
                         }
                         data.splice(this._pagination.size, 1);
                     }
@@ -91,7 +100,7 @@ class JsonApiBuilder {
                         response.links.prev =
                             url +
                                 (url.indexOf("?") === -1 ? "?" : "&") +
-                                `page[size]=${this._pagination.size.toString()}&page[before]=${this._pagination.before}`;
+                                `page[size]=${this._pagination.size.toString()}&page[before]=${this._pagination.before}${this._additionalParams}`;
                     }
                 }
             }

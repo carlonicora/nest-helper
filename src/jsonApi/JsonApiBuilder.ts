@@ -21,8 +21,16 @@ export interface JsonApiRelationshipBuilderInterface {
 export class JsonApiBuilder {
 	private _paginationCount = 25;
 	private _pagination: JsonApiPaginationInterface = {};
+	private _additionalParams: string = "";
 
 	constructor(query?: any) {
+		this._additionalParams = Object.keys(query)
+			.filter((key) => key !== "page[size]" && key !== "page[before]" && key !== "page[after]")
+			.map((key) => `${key}=${query[key]}`)
+			.join("&");
+
+		if (this._additionalParams.length > 0) this._additionalParams = "&" + this._additionalParams;
+
 		if (query?.["page[size]"]) this._pagination.size = +query["page[size]"];
 		if (query?.["page[before]"]) this._pagination.before = query["page[before]"];
 		if (query?.["page[after]"]) this._pagination.after = query["page[after]"];
@@ -54,14 +62,12 @@ export class JsonApiBuilder {
 		const hasEnoughData = data.length === this.size;
 		if (!this._pagination.before && !this._pagination.after && hasEnoughData) {
 			this._pagination.after = bufferToUuid(data[data.length - 1][this._pagination.idName]);
-
 			return;
 		}
 
 		if (this._pagination.before) {
 			this._pagination.after = this._pagination.before;
 			if (hasEnoughData) this._pagination.before = bufferToUuid(data[0][this._pagination.idName]);
-
 			return;
 		}
 
@@ -103,13 +109,17 @@ export class JsonApiBuilder {
 
 					if (data.length === this.size) {
 						response.links.self =
-							url + (url.indexOf("?") === -1 ? "?" : "&") + `page[size]=${this._pagination.size.toString()}`;
+							url +
+							(url.indexOf("?") === -1 ? "?" : "&") +
+							`page[size]=${this._pagination.size.toString()}${this._additionalParams}`;
 
 						if (this._pagination.after) {
 							response.links.next =
 								url +
 								(url.indexOf("?") === -1 ? "?" : "&") +
-								`page[size]=${this._pagination.size.toString()}&page[after]=${this._pagination.after}`;
+								`page[size]=${this._pagination.size.toString()}&page[after]=${this._pagination.after}${
+									this._additionalParams
+								}`;
 						}
 
 						data.splice(this._pagination.size, 1);
@@ -119,7 +129,9 @@ export class JsonApiBuilder {
 						response.links.prev =
 							url +
 							(url.indexOf("?") === -1 ? "?" : "&") +
-							`page[size]=${this._pagination.size.toString()}&page[before]=${this._pagination.before}`;
+							`page[size]=${this._pagination.size.toString()}&page[before]=${this._pagination.before}${
+								this._additionalParams
+							}`;
 					}
 				}
 			} else {

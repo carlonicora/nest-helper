@@ -16,6 +16,7 @@ export interface JsonApiRelationshipBuilderInterface {
 export declare class JsonApiBuilder {
     private _paginationCount;
     private _pagination;
+    private _additionalParams;
     constructor(query?: any);
     private get size();
     generateCursor(): JsonApiCursorInterface;
