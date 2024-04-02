@@ -24,6 +24,8 @@ export class JsonApiBuilder {
 	private _additionalParams: string = "";
 
 	constructor(query?: any) {
+		if (!query) return;
+
 		this._additionalParams = Object.keys(query)
 			.filter((key) => key !== "page[size]" && key !== "page[before]" && key !== "page[after]")
 			.map((key) => `${key}=${query[key]}`)
