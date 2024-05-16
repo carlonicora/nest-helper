@@ -1,3 +1,4 @@
+import { JsonApiBuilderInterface } from "./interfaces/JsonApiBuilderInterface";
 import { JsonApiDataInterface } from "./interfaces/JsonApiDataInterface";
 export interface JsonApiPaginationInterface {
     size?: number;
@@ -19,6 +20,8 @@ export declare class JsonApiBuilder {
     private _additionalParams;
     constructor(query?: any);
     private get size();
+    buildSingle(builder: JsonApiBuilderInterface, record: any): Promise<any>;
+    buildList(builder: JsonApiBuilderInterface, records: any[]): Promise<any>;
     generateCursor(): JsonApiCursorInterface;
     private updatePagination;
     private _addToIncluded;

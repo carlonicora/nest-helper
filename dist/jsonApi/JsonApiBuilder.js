@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JsonApiBuilder = void 0;
+const common_1 = require("@nestjs/common");
 const index_1 = require("../index");
 class JsonApiBuilder {
     constructor(query) {
@@ -10,7 +11,9 @@ class JsonApiBuilder {
         if (!query)
             return;
         this._additionalParams = Object.keys(query)
-            .filter((key) => key !== "page[size]" && key !== "page[before]" && key !== "page[after]")
+            .filter((key) => key !== "page[size]" &&
+            key !== "page[before]" &&
+            key !== "page[after]")
             .map((key) => `${key}=${query[key]}`)
             .join("&");
         if (this._additionalParams.length > 0)
@@ -24,6 +27,14 @@ class JsonApiBuilder {
     }
     get size() {
         return (this._pagination?.size ?? this._paginationCount) + 1;
+    }
+    buildSingle(builder, record) {
+        if (!record)
+            throw new common_1.HttpException(`not found`, common_1.HttpStatus.NOT_FOUND);
+        return this.serialise(record, builder.create(), `${process.env.API_URL}${builder.endpoint}/${(0, index_1.bufferToUuid)(record[`${builder.id}`])}`);
+    }
+    buildList(builder, records) {
+        return this.serialise(records, builder.create(), `${process.env.API_URL}${builder.endpoint}`, `${builder.id}`);
     }
     generateCursor() {
         const cursor = {
@@ -145,7 +156,8 @@ class JsonApiBuilder {
         serialisedData.attributes = {};
         Object.keys(builder.attributes).forEach((attribute) => {
             if (typeof builder.attributes[attribute] === "function") {
-                serialisedData.attributes[attribute] = builder.attributes[attribute](data);
+                serialisedData.attributes[attribute] =
+                    builder.attributes[attribute](data);
             }
             else {
                 serialisedData.attributes[attribute] = data[attribute];
@@ -207,7 +219,8 @@ class JsonApiBuilder {
                         includedElements.push(...additionalIncludeds);
                     serialisedData.relationships[relationship[1].name ?? relationship[0]] = resourceLinkage;
                 }
-                else if (manyToManyRelationships.length > 1 && data[manyToManyRelationships[0]]) {
+                else if (manyToManyRelationships.length > 1 &&
+                    data[manyToManyRelationships[0]]) {
                     serialisedData.relationships[relationship[1].name ?? relationship[0]] = { data: [] };
                     data[manyToManyRelationships[0]].forEach((item) => {
                         const { minimalData, relationshipLink, additionalIncludeds } = this.serialiseRelationship(item[manyToManyRelationships[1]], relationship[1].data);
@@ -243,7 +256,9 @@ class JsonApiBuilder {
         if (Array.isArray(data)) {
             const serialisedResults = data.map((item) => this.serialiseData(item, builder));
             const serialisedData = serialisedResults.map((result) => result.serialisedData);
-            const includedElements = serialisedResults.map((result) => result.includedElements).flat();
+            const includedElements = serialisedResults
+                .map((result) => result.includedElements)
+                .flat();
             response.minimalData = serialisedData.map((result) => {
                 return { type: result.type, id: result.id };
             });
@@ -260,7 +275,10 @@ class JsonApiBuilder {
                     self: serialisedData.links.self,
                 };
             }
-            this._addToIncluded(response.additionalIncludeds, [...includedElements, serialisedData]);
+            this._addToIncluded(response.additionalIncludeds, [
+                ...includedElements,
+                serialisedData,
+            ]);
         }
         return response;
     }
