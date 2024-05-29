@@ -67,7 +67,7 @@ export class JsonApiBuilder {
     return this.serialise(
       records,
       builder.create(),
-      `${process.env.API_URL}${builder.endpoint}`,
+      `${process.env.API_URL}${builder.endpoint}${builder.endpointParameters}`,
       `${builder.id}`,
     );
   }

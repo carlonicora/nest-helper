@@ -34,7 +34,7 @@ class JsonApiBuilder {
         return this.serialise(record, builder.create(), `${process.env.API_URL}${builder.endpoint}/${(0, index_1.bufferToUuid)(record[`${builder.id}`])}`);
     }
     buildList(builder, records) {
-        return this.serialise(records, builder.create(), `${process.env.API_URL}${builder.endpoint}`, `${builder.id}`);
+        return this.serialise(records, builder.create(), `${process.env.API_URL}${builder.endpoint}${builder.endpointParameters}`, `${builder.id}`);
     }
     generateCursor() {
         const cursor = {
