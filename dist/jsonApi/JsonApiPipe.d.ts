@@ -4,5 +4,6 @@ export declare class JsonApiPipe<T> implements PipeTransform {
     constructor(classType: new (...args: any[]) => T);
     transform(value: any): Promise<T>;
     private _validate;
+    private _ensureAllProperties;
     private _extractErrors;
 }

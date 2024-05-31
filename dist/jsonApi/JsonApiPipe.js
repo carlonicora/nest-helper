@@ -18,7 +18,10 @@ let JsonApiPipe = class JsonApiPipe {
         this.classType = classType;
     }
     async transform(value) {
-        return await this._validate(this.classType, value);
+        const instance = new this.classType();
+        const transformedValue = (0, class_transformer_1.plainToClass)(this.classType, value);
+        const validatedValue = this._ensureAllProperties(instance, transformedValue);
+        return await this._validate(this.classType, validatedValue);
     }
     async _validate(type, jsonApi) {
         const response = (0, class_transformer_1.plainToClass)(type, jsonApi);
@@ -28,6 +31,14 @@ let JsonApiPipe = class JsonApiPipe {
             throw new common_1.BadRequestException(errors);
         }
         return response;
+    }
+    _ensureAllProperties(instance, transformed) {
+        for (const key of Object.keys(instance)) {
+            if (!(key in transformed)) {
+                transformed[key] = undefined;
+            }
+        }
+        return transformed;
     }
     _extractErrors(errors, parentPath = "") {
         let errorMessages = [];

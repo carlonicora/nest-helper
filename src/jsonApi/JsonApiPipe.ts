@@ -7,7 +7,20 @@ export class JsonApiPipe<T> implements PipeTransform {
   constructor(private readonly classType: new (...args: any[]) => T) {}
 
   async transform(value: any): Promise<T> {
-    return await this._validate(this.classType, value);
+    // Initialize an instance of the class to get default values for missing properties
+    const instance = new this.classType();
+
+    // Transform the incoming value
+    const transformedValue = plainToClass(this.classType, value);
+
+    // Ensure all properties from the class instance are present in the transformed value
+    const validatedValue = this._ensureAllProperties(
+      instance,
+      transformedValue,
+    );
+
+    // Validate the transformed and completed object
+    return await this._validate(this.classType, validatedValue);
   }
 
   private async _validate<T>(
@@ -23,6 +36,16 @@ export class JsonApiPipe<T> implements PipeTransform {
     }
 
     return response;
+  }
+
+  private _ensureAllProperties(instance: any, transformed: any): any {
+    // Iterate over the instance's properties and ensure they are present in the transformed object
+    for (const key of Object.keys(instance)) {
+      if (!(key in transformed)) {
+        transformed[key] = undefined; // Set missing properties to undefined
+      }
+    }
+    return transformed;
   }
 
   private _extractErrors(
