@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JsonApiPipe = exports.bufferToUuid = exports.uuidToBuffer = exports.DataValidator = exports.Router = exports.JsonApiBuilder = exports.OptionalJwtAuthGuard = exports.JwtStrategy = exports.JwtAuthGuard = exports.AuthModule = exports.JsonApiNavigator = exports.Imgix = void 0;
+const common_1 = require("@nestjs/common");
 var Imgix_1 = require("./imgix/Imgix");
 Object.defineProperty(exports, "Imgix", { enumerable: true, get: function () { return Imgix_1.Imgix; } });
 var JsonApiNavigator_1 = require("./jsonApi/JsonApiNavigator");
@@ -19,7 +20,14 @@ var Router_1 = require("./routing/Router");
 Object.defineProperty(exports, "Router", { enumerable: true, get: function () { return Router_1.Router; } });
 var DataValidator_1 = require("./validator/DataValidator");
 Object.defineProperty(exports, "DataValidator", { enumerable: true, get: function () { return DataValidator_1.DataValidator; } });
+function isValidUuid(uuid) {
+    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    return regex.test(uuid);
+}
 function uuidToBuffer(uuid) {
+    if (!isValidUuid(uuid)) {
+        throw new common_1.HttpException("Invalid UUID format", common_1.HttpStatus.BAD_REQUEST);
+    }
     const hex = uuid.replace(/-/g, "");
     return Buffer.from(hex, "hex");
 }
@@ -33,6 +41,9 @@ function bufferToUuid(buffer) {
         hex.substring(16, 20),
         hex.substring(20, 32),
     ].join("-");
+    if (!isValidUuid(uuid)) {
+        throw new common_1.HttpException("Invalid UUID format", common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     return uuid;
 }
 exports.bufferToUuid = bufferToUuid;
