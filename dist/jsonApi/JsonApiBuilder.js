@@ -203,7 +203,7 @@ class JsonApiBuilder {
                     catch (e) { }
                 }
                 else if (data[relationship[0]]) {
-                    const { minimalData, relationshipLink, additionalIncludeds } = this.serialiseRelationship(data[relationship[0]], relationship[1].data);
+                    const { minimalData, relationshipLink, additionalIncludeds } = this.serialiseRelationship(data[relationship[0]], relationship[1].data.create());
                     resourceLinkage = {
                         data: minimalData,
                     };
@@ -223,7 +223,7 @@ class JsonApiBuilder {
                     data[manyToManyRelationships[0]]) {
                     serialisedData.relationships[relationship[1].name ?? relationship[0]] = { data: [] };
                     data[manyToManyRelationships[0]].forEach((item) => {
-                        const { minimalData, relationshipLink, additionalIncludeds } = this.serialiseRelationship(item[manyToManyRelationships[1]], relationship[1].data);
+                        const { minimalData, relationshipLink, additionalIncludeds } = this.serialiseRelationship(item[manyToManyRelationships[1]], relationship[1].data.create());
                         if (relationship[1].included && additionalIncludeds.length > 0)
                             includedElements.push(...additionalIncludeds);
                         serialisedData.relationships[relationship[1].name ?? relationship[0]].data.push(minimalData);

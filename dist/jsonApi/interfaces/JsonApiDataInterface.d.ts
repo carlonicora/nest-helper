@@ -1,3 +1,4 @@
+import { JsonApiBuilderInterface } from "./JsonApiBuilderInterface";
 export type transformFunction<T> = (data: T) => any;
 export interface JsonApiDataInterface {
     type: string;
@@ -17,7 +18,7 @@ export interface JsonApiDataInterface {
                 type: string;
                 id: string | transformFunction<any>;
             };
-            data?: JsonApiDataInterface;
+            data?: JsonApiBuilderInterface;
             included?: boolean;
             name?: string;
             links?: {

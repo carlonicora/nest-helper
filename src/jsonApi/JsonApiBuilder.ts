@@ -301,7 +301,7 @@ export class JsonApiBuilder {
           const { minimalData, relationshipLink, additionalIncludeds } =
             this.serialiseRelationship(
               data[relationship[0]],
-              relationship[1].data,
+              relationship[1].data.create(),
             );
 
           resourceLinkage = {
@@ -331,7 +331,7 @@ export class JsonApiBuilder {
             const { minimalData, relationshipLink, additionalIncludeds } =
               this.serialiseRelationship(
                 item[manyToManyRelationships[1]],
-                relationship[1].data,
+                relationship[1].data.create(),
               );
             if (relationship[1].included && additionalIncludeds.length > 0)
               includedElements.push(...additionalIncludeds);
