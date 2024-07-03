@@ -31,6 +31,8 @@ class JsonApiBuilder {
     buildSingle(builder, record) {
         if (!record)
             throw new common_1.HttpException(`not found`, common_1.HttpStatus.NOT_FOUND);
+        if (typeof record[`${builder.id}`] === "string")
+            return this.serialise(record, builder.create(), `${process.env.API_URL}${builder.endpoint}/${record[`${builder.id}`]}`);
         return this.serialise(record, builder.create(), `${process.env.API_URL}${builder.endpoint}/${(0, index_1.bufferToUuid)(record[`${builder.id}`])}`);
     }
     buildList(builder, records) {
@@ -56,18 +58,29 @@ class JsonApiBuilder {
             this._pagination.idName = idName ?? "id";
         const hasEnoughData = data.length === this.size;
         if (!this._pagination.before && !this._pagination.after && hasEnoughData) {
-            this._pagination.after = (0, index_1.bufferToUuid)(data[data.length - 1][this._pagination.idName]);
+            if (typeof data[data.length - 1][this._pagination.idName] === "string")
+                this._pagination.after = data[data.length - 1][this._pagination.idName];
+            else
+                this._pagination.after = (0, index_1.bufferToUuid)(data[data.length - 1][this._pagination.idName]);
             return;
         }
         if (this._pagination.before) {
             this._pagination.after = this._pagination.before;
-            if (hasEnoughData)
-                this._pagination.before = (0, index_1.bufferToUuid)(data[0][this._pagination.idName]);
+            if (hasEnoughData) {
+                if (typeof data[0][this._pagination.idName] === "string")
+                    this._pagination.before = data[0][this._pagination.idName];
+                else
+                    this._pagination.before = (0, index_1.bufferToUuid)(data[0][this._pagination.idName]);
+            }
             return;
         }
         this._pagination.before = this._pagination.after;
-        if (hasEnoughData)
-            this._pagination.after = (0, index_1.bufferToUuid)(data[data.length - 1][this._pagination.idName]);
+        if (hasEnoughData) {
+            if (typeof data[data.length - 1][this._pagination.idName] === "string")
+                this._pagination.after = data[data.length - 1][this._pagination.idName];
+            else
+                this._pagination.after = (0, index_1.bufferToUuid)(data[data.length - 1][this._pagination.idName]);
+        }
     }
     _addToIncluded(includedElements, newElements) {
         const uniqueIdentifiers = new Set(includedElements.map((e) => `${e.type}-${e.id}`));
