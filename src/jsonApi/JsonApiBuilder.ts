@@ -340,7 +340,8 @@ export class JsonApiBuilder {
           ] = resourceLinkage;
         } else if (
           manyToManyRelationships.length > 1 &&
-          data[manyToManyRelationships[0]]
+          data[manyToManyRelationships[0]] !== undefined &&
+          data[manyToManyRelationships[0]].length > 0
         ) {
           serialisedData.relationships[
             relationship[1].name ?? relationship[0]

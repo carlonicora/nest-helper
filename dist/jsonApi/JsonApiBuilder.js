@@ -233,7 +233,8 @@ class JsonApiBuilder {
                     serialisedData.relationships[relationship[1].name ?? relationship[0]] = resourceLinkage;
                 }
                 else if (manyToManyRelationships.length > 1 &&
-                    data[manyToManyRelationships[0]]) {
+                    data[manyToManyRelationships[0]] !== undefined &&
+                    data[manyToManyRelationships[0]].length > 0) {
                     serialisedData.relationships[relationship[1].name ?? relationship[0]] = { data: [] };
                     data[manyToManyRelationships[0]].forEach((item) => {
                         const { minimalData, relationshipLink, additionalIncludeds } = this.serialiseRelationship(item[manyToManyRelationships[1]], relationship[1].data.create());
