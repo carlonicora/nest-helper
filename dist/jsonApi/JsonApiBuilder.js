@@ -239,7 +239,12 @@ class JsonApiBuilder {
                         const { minimalData, relationshipLink, additionalIncludeds } = this.serialiseRelationship(item[manyToManyRelationships[1]], relationship[1].data.create());
                         if (relationship[1].included && additionalIncludeds.length > 0)
                             includedElements.push(...additionalIncludeds);
-                        serialisedData.relationships[relationship[1].name ?? relationship[0]].data.push(minimalData);
+                        if (relationship[1].forceSingle === true) {
+                            serialisedData.relationships[relationship[1].name ?? relationship[0]] = { data: minimalData };
+                        }
+                        else {
+                            serialisedData.relationships[relationship[1].name ?? relationship[0]].data.push(minimalData);
+                        }
                     });
                 }
                 else if (relationship[1].links) {

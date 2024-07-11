@@ -353,9 +353,16 @@ export class JsonApiBuilder {
               );
             if (relationship[1].included && additionalIncludeds.length > 0)
               includedElements.push(...additionalIncludeds);
-            serialisedData.relationships[
-              relationship[1].name ?? relationship[0]
-            ].data.push(minimalData);
+
+            if (relationship[1].forceSingle === true) {
+              serialisedData.relationships[
+                relationship[1].name ?? relationship[0]
+              ] = { data: minimalData };
+            } else {
+              serialisedData.relationships[
+                relationship[1].name ?? relationship[0]
+              ].data.push(minimalData);
+            }
           });
         } else if (relationship[1].links) {
           const related = relationship[1].links.related(data);

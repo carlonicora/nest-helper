@@ -19,6 +19,7 @@ export interface JsonApiDataInterface {
                 id: string | transformFunction<any>;
             };
             data?: JsonApiBuilderInterface;
+            forceSingle?: boolean;
             included?: boolean;
             name?: string;
             links?: {
