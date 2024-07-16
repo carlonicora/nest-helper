@@ -9,6 +9,7 @@ export { JsonApiDataInterface, transformFunction, } from "./jsonApi/interfaces/J
 export { JsonApiBuilder } from "./jsonApi/JsonApiBuilder";
 export { Router } from "./routing/Router";
 export { DataValidator } from "./validator/DataValidator";
+export declare function createSlug(title: string): string;
 export declare function isValidUuid(uuid: string): boolean;
 export declare function uuidToBuffer(uuid: string): Buffer;
 export declare function bufferToUuid(buffer: Buffer): string;
