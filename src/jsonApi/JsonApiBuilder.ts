@@ -322,9 +322,14 @@ export class JsonApiBuilder {
               relationship[1].data.create(),
             );
 
-          resourceLinkage = {
-            data: minimalData,
-          };
+          if (relationship[1].forceSingle === true)
+            resourceLinkage = {
+              data: minimalData[0],
+            };
+          else
+            resourceLinkage = {
+              data: minimalData,
+            };
 
           if (relationshipLink) {
             resourceLinkage.links = relationshipLink;
