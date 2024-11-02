@@ -43,7 +43,9 @@ export abstract class AbstractJsonApiSerialiser
   create(): JsonApiDataInterface {
     return {
       type: this._endpoint,
-      id: "",
+      id: (data: any) => {
+        return bufferToUuid(data[this.id]);
+      },
       attributes: {},
       meta: {
         createdAt: "createdAt",
