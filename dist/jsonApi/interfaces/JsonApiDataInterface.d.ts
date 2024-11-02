@@ -1,4 +1,4 @@
-import { JsonApiBuilderInterface } from "./JsonApiBuilderInterface";
+import { JsonApiBuilderInterface } from "../../serialisers/interfaces/JsonApiBuilderInterface";
 export type transformFunction<T> = (data: T) => any;
 export interface JsonApiDataInterface {
     type: string;

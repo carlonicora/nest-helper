@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JsonApiPipe = exports.bufferToUuid = exports.uuidToBuffer = exports.isValidUuid = exports.createSlug = exports.DataValidator = exports.Router = exports.JsonApiBuilder = exports.OptionalJwtAuthGuard = exports.JwtStrategy = exports.JwtAuthGuard = exports.AuthModule = exports.JsonApiNavigator = exports.Imgix = void 0;
+exports.JsonApiSerialiserOptions = exports.AbstractJsonApiSerialiser = exports.JsonApiPipe = exports.bufferToUuid = exports.uuidToBuffer = exports.isValidUuid = exports.createSlug = exports.DataValidator = exports.JsonApiBuilder = exports.Router = exports.OptionalJwtAuthGuard = exports.JwtStrategy = exports.JwtAuthGuard = exports.AuthModule = exports.JsonApiNavigator = exports.Imgix = void 0;
 const common_1 = require("@nestjs/common");
 var Imgix_1 = require("./imgix/Imgix");
 Object.defineProperty(exports, "Imgix", { enumerable: true, get: function () { return Imgix_1.Imgix; } });
@@ -14,10 +14,10 @@ var jwt_strategy_1 = require("./auth/jwt.strategy");
 Object.defineProperty(exports, "JwtStrategy", { enumerable: true, get: function () { return jwt_strategy_1.JwtStrategy; } });
 var optional_jwt_auth_guard_1 = require("./auth/optional-jwt-auth.guard");
 Object.defineProperty(exports, "OptionalJwtAuthGuard", { enumerable: true, get: function () { return optional_jwt_auth_guard_1.OptionalJwtAuthGuard; } });
-var JsonApiBuilder_1 = require("./jsonApi/JsonApiBuilder");
-Object.defineProperty(exports, "JsonApiBuilder", { enumerable: true, get: function () { return JsonApiBuilder_1.JsonApiBuilder; } });
 var Router_1 = require("./routing/Router");
 Object.defineProperty(exports, "Router", { enumerable: true, get: function () { return Router_1.Router; } });
+var JsonApiBuilder_1 = require("./serialisers/JsonApiBuilder");
+Object.defineProperty(exports, "JsonApiBuilder", { enumerable: true, get: function () { return JsonApiBuilder_1.JsonApiBuilder; } });
 var DataValidator_1 = require("./validator/DataValidator");
 Object.defineProperty(exports, "DataValidator", { enumerable: true, get: function () { return DataValidator_1.DataValidator; } });
 function createSlug(title) {
@@ -62,4 +62,8 @@ function bufferToUuid(buffer) {
 exports.bufferToUuid = bufferToUuid;
 var JsonApiPipe_1 = require("./jsonApi/JsonApiPipe");
 Object.defineProperty(exports, "JsonApiPipe", { enumerable: true, get: function () { return JsonApiPipe_1.JsonApiPipe; } });
+var AbstractJsonApiSerialiser_1 = require("./serialisers/abstracts/AbstractJsonApiSerialiser");
+Object.defineProperty(exports, "AbstractJsonApiSerialiser", { enumerable: true, get: function () { return AbstractJsonApiSerialiser_1.AbstractJsonApiSerialiser; } });
+var JsonApiSerialiserOptions_1 = require("./serialisers/decorators/JsonApiSerialiserOptions");
+Object.defineProperty(exports, "JsonApiSerialiserOptions", { enumerable: true, get: function () { return JsonApiSerialiserOptions_1.JsonApiSerialiserOptions; } });
 //# sourceMappingURL=index.js.map

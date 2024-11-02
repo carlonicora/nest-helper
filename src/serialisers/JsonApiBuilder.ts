@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { bufferToUuid } from "../index";
+import { JsonApiDataInterface } from "../jsonApi/interfaces/JsonApiDataInterface";
 import { JsonApiBuilderInterface } from "./interfaces/JsonApiBuilderInterface";
-import { JsonApiDataInterface } from "./interfaces/JsonApiDataInterface";
 
 export interface JsonApiPaginationInterface {
   size?: number;

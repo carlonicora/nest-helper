@@ -11,8 +11,8 @@ export {
   JsonApiDataInterface,
   transformFunction,
 } from "./jsonApi/interfaces/JsonApiDataInterface";
-export { JsonApiBuilder } from "./jsonApi/JsonApiBuilder";
 export { Router } from "./routing/Router";
+export { JsonApiBuilder } from "./serialisers/JsonApiBuilder";
 export { DataValidator } from "./validator/DataValidator";
 
 export function createSlug(title: string): string {
@@ -59,5 +59,7 @@ export function bufferToUuid(buffer: Buffer): string {
   return uuid;
 }
 
-export { JsonApiBuilderInterface } from "./jsonApi/interfaces/JsonApiBuilderInterface";
 export { JsonApiPipe } from "./jsonApi/JsonApiPipe";
+export { AbstractJsonApiSerialiser } from "./serialisers/abstracts/AbstractJsonApiSerialiser";
+export { JsonApiSerialiserOptions } from "./serialisers/decorators/JsonApiSerialiserOptions";
+export { JsonApiBuilderInterface } from "./serialisers/interfaces/JsonApiBuilderInterface";
