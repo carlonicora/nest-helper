@@ -10,5 +10,10 @@ export declare abstract class AbstractJsonApiSerialiser implements JsonApiBuilde
     get id(): string;
     get endpoint(): string;
     get endpointParameters(): string;
-    create(): JsonApiDataInterface;
+    create(params?: {
+        attributes?: any;
+        meta?: any;
+        links?: any;
+        relationships?: any;
+    }): JsonApiDataInterface;
 }

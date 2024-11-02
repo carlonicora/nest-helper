@@ -28,19 +28,20 @@ class AbstractJsonApiSerialiser {
     get endpointParameters() {
         return "";
     }
-    create() {
+    create(params) {
         return {
             type: this._endpoint,
             id: (data) => {
                 return (0, uuid_1.bufferToUuid)(data[this.id]);
             },
-            attributes: {},
+            attributes: params?.attributes ?? {},
             meta: {
+                ...params?.meta,
                 createdAt: "createdAt",
                 updatedAt: "updatedAt",
             },
-            relationships: {},
-            links: {
+            relationships: params?.relationships ?? {},
+            links: params?.links ?? {
                 self: (data) => {
                     return `${process.env.API_URL}${this.endpoint}/${(0, uuid_1.bufferToUuid)(data[this.id])}`;
                 },

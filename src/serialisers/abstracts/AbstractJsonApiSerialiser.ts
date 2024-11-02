@@ -40,19 +40,25 @@ export abstract class AbstractJsonApiSerialiser
     return "";
   }
 
-  create(): JsonApiDataInterface {
+  create(params?: {
+    attributes?: any;
+    meta?: any;
+    links?: any;
+    relationships?: any;
+  }): JsonApiDataInterface {
     return {
       type: this._endpoint,
       id: (data: any) => {
         return bufferToUuid(data[this.id]);
       },
-      attributes: {},
+      attributes: params?.attributes ?? {},
       meta: {
+        ...params?.meta,
         createdAt: "createdAt",
         updatedAt: "updatedAt",
       },
-      relationships: {},
-      links: {
+      relationships: params?.relationships ?? {},
+      links: params?.links ?? {
         self: (data: any) => {
           return `${process.env.API_URL}${this.endpoint}/${bufferToUuid(
             data[this.id],
