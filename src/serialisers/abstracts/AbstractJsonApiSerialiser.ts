@@ -1,6 +1,6 @@
-import { JsonApiDataInterface } from "src/jsonApi/interfaces/JsonApiDataInterface";
-import { bufferToUuid } from "src/lib/uuid";
-import { JsonApiBuilderInterface } from "src/serialisers/interfaces/JsonApiBuilderInterface";
+import { JsonApiDataInterface } from "../../jsonApi/interfaces/JsonApiDataInterface";
+import { bufferToUuid } from "../../lib/uuid";
+import { JsonApiBuilderInterface } from "../interfaces/JsonApiBuilderInterface";
 
 export abstract class AbstractJsonApiSerialiser
   implements JsonApiBuilderInterface

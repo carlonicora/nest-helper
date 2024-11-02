@@ -1,5 +1,5 @@
-import { JsonApiDataInterface } from "src/jsonApi/interfaces/JsonApiDataInterface";
-import { JsonApiBuilderInterface } from "src/serialisers/interfaces/JsonApiBuilderInterface";
+import { JsonApiDataInterface } from "../../jsonApi/interfaces/JsonApiDataInterface";
+import { JsonApiBuilderInterface } from "../interfaces/JsonApiBuilderInterface";
 export declare abstract class AbstractJsonApiSerialiser implements JsonApiBuilderInterface {
     constructor();
     protected getDefaultType(): string;

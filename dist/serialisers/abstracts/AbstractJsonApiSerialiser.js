@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AbstractJsonApiSerialiser = void 0;
-const uuid_1 = require("src/lib/uuid");
+const uuid_1 = require("../../lib/uuid");
 class AbstractJsonApiSerialiser {
     constructor() {
         this._endpoint =
