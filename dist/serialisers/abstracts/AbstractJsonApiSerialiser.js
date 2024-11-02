@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AbstractJsonApiSerialiser = void 0;
+const src_1 = require("src");
 class AbstractJsonApiSerialiser {
     constructor() {
         this._endpoint =
@@ -37,6 +38,11 @@ class AbstractJsonApiSerialiser {
                 updatedAt: "updatedAt",
             },
             relationships: {},
+            links: {
+                self: (data) => {
+                    return `${process.env.API_URL}${this.endpoint}/${(0, src_1.bufferToUuid)(data[this.id])}`;
+                },
+            },
         };
     }
 }

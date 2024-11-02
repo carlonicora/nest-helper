@@ -1,3 +1,4 @@
+import { bufferToUuid } from "src";
 import { JsonApiDataInterface } from "src/jsonApi/interfaces/JsonApiDataInterface";
 import { JsonApiBuilderInterface } from "src/serialisers/interfaces/JsonApiBuilderInterface";
 
@@ -49,6 +50,13 @@ export abstract class AbstractJsonApiSerialiser
         updatedAt: "updatedAt",
       },
       relationships: {},
+      links: {
+        self: (data: any) => {
+          return `${process.env.API_URL}${this.endpoint}/${bufferToUuid(
+            data[this.id],
+          )}`;
+        },
+      },
     };
   }
 }

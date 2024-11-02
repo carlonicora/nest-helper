@@ -1,6 +1,6 @@
 {
   "name": "nest-helpers",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": " A library that support jsonapi in nest projects",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
