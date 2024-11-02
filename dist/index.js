@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JsonApiSerialiserOptions = exports.AbstractJsonApiSerialiser = exports.JsonApiPipe = exports.bufferToUuid = exports.uuidToBuffer = exports.isValidUuid = exports.createSlug = exports.DataValidator = exports.JsonApiBuilder = exports.Router = exports.OptionalJwtAuthGuard = exports.JwtStrategy = exports.JwtAuthGuard = exports.AuthModule = exports.JsonApiNavigator = exports.Imgix = void 0;
-const common_1 = require("@nestjs/common");
+exports.JsonApiSerialiserOptions = exports.AbstractJsonApiSerialiser = exports.uuidToBuffer = exports.isValidUuid = exports.bufferToUuid = exports.JsonApiPipe = exports.createSlug = exports.DataValidator = exports.JsonApiBuilder = exports.Router = exports.OptionalJwtAuthGuard = exports.JwtStrategy = exports.JwtAuthGuard = exports.AuthModule = exports.JsonApiNavigator = exports.Imgix = void 0;
 var Imgix_1 = require("./imgix/Imgix");
 Object.defineProperty(exports, "Imgix", { enumerable: true, get: function () { return Imgix_1.Imgix; } });
 var JsonApiNavigator_1 = require("./jsonApi/JsonApiNavigator");
@@ -32,36 +31,12 @@ function createSlug(title) {
         .substring(0, 75);
 }
 exports.createSlug = createSlug;
-function isValidUuid(uuid) {
-    const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    return regex.test(uuid);
-}
-exports.isValidUuid = isValidUuid;
-function uuidToBuffer(uuid) {
-    if (!isValidUuid(uuid)) {
-        throw new common_1.HttpException("Invalid UUID format", common_1.HttpStatus.BAD_REQUEST);
-    }
-    const hex = uuid.replace(/-/g, "");
-    return Buffer.from(hex, "hex");
-}
-exports.uuidToBuffer = uuidToBuffer;
-function bufferToUuid(buffer) {
-    const hex = buffer.toString("hex");
-    const uuid = [
-        hex.substring(0, 8),
-        hex.substring(8, 12),
-        hex.substring(12, 16),
-        hex.substring(16, 20),
-        hex.substring(20, 32),
-    ].join("-");
-    if (!isValidUuid(uuid)) {
-        throw new common_1.HttpException("Invalid UUID format", common_1.HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    return uuid;
-}
-exports.bufferToUuid = bufferToUuid;
 var JsonApiPipe_1 = require("./jsonApi/JsonApiPipe");
 Object.defineProperty(exports, "JsonApiPipe", { enumerable: true, get: function () { return JsonApiPipe_1.JsonApiPipe; } });
+var uuid_1 = require("./lib/uuid");
+Object.defineProperty(exports, "bufferToUuid", { enumerable: true, get: function () { return uuid_1.bufferToUuid; } });
+Object.defineProperty(exports, "isValidUuid", { enumerable: true, get: function () { return uuid_1.isValidUuid; } });
+Object.defineProperty(exports, "uuidToBuffer", { enumerable: true, get: function () { return uuid_1.uuidToBuffer; } });
 var AbstractJsonApiSerialiser_1 = require("./serialisers/abstracts/AbstractJsonApiSerialiser");
 Object.defineProperty(exports, "AbstractJsonApiSerialiser", { enumerable: true, get: function () { return AbstractJsonApiSerialiser_1.AbstractJsonApiSerialiser; } });
 var JsonApiSerialiserOptions_1 = require("./serialisers/decorators/JsonApiSerialiserOptions");

@@ -1,5 +1,5 @@
-import { bufferToUuid } from "src";
 import { JsonApiDataInterface } from "src/jsonApi/interfaces/JsonApiDataInterface";
+import { bufferToUuid } from "src/lib/uuid";
 import { JsonApiBuilderInterface } from "src/serialisers/interfaces/JsonApiBuilderInterface";
 
 export abstract class AbstractJsonApiSerialiser
