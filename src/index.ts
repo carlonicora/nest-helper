@@ -13,6 +13,11 @@ export { JsonApiPipe } from "./jsonApi/JsonApiPipe";
 export { AbstractJsonApiSerialiser } from "./serialisers/abstracts/AbstractJsonApiSerialiser";
 export { JsonApiSerialiserOptions } from "./serialisers/decorators/JsonApiSerialiserOptions";
 export { JsonApiBuilderInterface } from "./serialisers/interfaces/JsonApiBuilderInterface";
-export { JsonApiBuilder } from "./serialisers/JsonApiBuilder";
+export {
+  JsonApiBuilder,
+  JsonApiCursorInterface,
+  JsonApiPaginationInterface,
+  JsonApiRelationshipBuilderInterface,
+} from "./serialisers/JsonApiBuilder";
 
 export { DataValidator } from "./validator/DataValidator";
